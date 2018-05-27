@@ -1,0 +1,15 @@
+github更新自己Fork的代码
+git remote -v   --查看远程仓库
+git remote add primary gitURL --添加远程仓库 primary是自己设置的别名(主库)
+
+1. git fetch scrapy    --fetch原始源分支的新版本到本地(完成后目录下看不到文件)
+2. git merge scrapy/master --合并代码(目录文件显示)
+3. git push origin master
+
+
+git update-index --assume-unchanged  org.txt  --忽略对该文件的追踪
+git update-index --no-assume-unchanged  org.txt  --继续追踪该文件
+git ls-files -v |grep '^h\ ' |awk '{print $2}'  --查看忽略追踪的文件路径
+git ls-files -v |grep '^h\ ' |awk '{print $2}' |xargs git update-index --no-assume-unchanged --将全部忽略追踪的文件恢复追踪
+
+.gitignore文件只能对没有被git追踪的文件进行忽略
