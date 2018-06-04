@@ -1,0 +1,62 @@
+Oracle 查询速度在 7万条/s左右
+100万条数据 100m  13s  一次查询
+分10次,每次10万条耗时 24s
+本机发送一个包来回时间1s
+ if(labelName==null||"".equals(labelName))
+springboot整合mybatis依赖包
+<dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.0.29</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>1.3.0</version>
+        </dependency>
+		
+		
+<insert id="addList" parameterType="java.util.List" useGeneratedKeys="false"> 
+    INSERT ALL 
+    <foreach item="item" index="index" collection="list"> 
+    INTO T_APPLAUD 
+    ( 
+      ID, 
+      USER_ID, 
+      BUSINESS_TYPE, 
+      PRODUCT_ID, 
+      CREATE_TIME 
+    ) VALUES 
+    ( 
+      #{item.id, jdbcType=NUMERIC}, 
+      #{item.userId, jdbcType=VARCHAR}, 
+      #{item.businessType, jdbcType=VARCHAR}, 
+      #{item.productId, jdbcType=VARCHAR}, 
+      #{item.createdTime, jdbcType=NUMERIC}  
+    ) 
+    </foreach> 
+    SELECT 1 FROM DUAL 
+  </insert> 
+
+
+<insert id="addList" parameterType="java.util.List" useGeneratedKeys="false"> 
+    INSERT INTO T_APPLAUD 
+    ( 
+      ID, 
+      USER_ID, 
+      BUSINESS_TYPE, 
+      PRODUCT_ID, 
+      CREATE_TIME 
+    ) 
+    <foreach item="item" index="index" collection="list" separator="union all"> 
+    ( 
+      SELECT  
+        #{item.id}, 
+        #{item.userId}, 
+        #{item.businessType}, 
+        #{item.productId}, 
+        #{item.createdTime}  
+      FROM DUAL 
+    ) 
+    </foreach> 
+  </insert>   
