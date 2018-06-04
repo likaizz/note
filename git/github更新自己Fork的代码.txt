@@ -1,3 +1,4 @@
+ssh-keygen -t rsa -C "youremail@example.com"   --生成私钥秘钥
 github更新自己Fork的代码
 git remote -v   --查看远程仓库
 git remote add primary gitURL --添加远程仓库 primary是自己设置的别名(主库)
