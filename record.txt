@@ -30,7 +30,46 @@ begin
 
 
 
-	
+
+
+js{
+var str='function(){emit(this.end,1);}'
+eval("("+str+")");//解析字符串得到对象
+
+
+
+}	
+
+mongoDB{
+var arr=db.getCollection('multiEnd').find({value:{$gte:2}},{_id:1})
+// typeof arr  //object
+arr.constructor  //DBQuery
+db.BaseRelation.find({end:{$nin:arr.toArray()}})
+
+var obj=db.BaseRelation.aggregate([{$group:{_id:"$end",count:{$sum:1}}},{$match:{count:{$gte:2}}}],{allowDiskUse:true})
+obj.constructor //Object
+obj.itcount()  //分组的数量
+
+//存储过程
+db.system.js.update({_id:'more2moreResult'},{_id:'more2moreResult',value:function(){
+    var aggregate=db.BaseRelation.aggregate([{$group:{_id:"$end",count:{$sum:1}}},{$match:{count:{$gte:2}}}],{allowDiskUse:true});
+    var excludes=aggregate.toArray();
+    var resultArr=[];
+    for(var i=0;i<excludes.length;i++){
+        resultArr.push(excludes[i]._id);
+        };
+        return resultArr;
+    }});
+    
+    db.eval('more2moreResult()')
+
+
+
+db.BaseRelation.aggregate([{$group:{_id:"$end",count:{$sum:1}}},{$match:{count:{$gte:2}}}],{allowDiskUse:true}) //allowDiskUse表示可以使用硬盘空间
+
+
+
+}
 	
 	
 	
