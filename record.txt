@@ -64,9 +64,12 @@ db.system.js.update({_id:'more2moreResult'},{_id:'more2moreResult',value:functio
     db.eval('more2moreResult()')
 
 
+//分组聚合有内存空间限制和输出结果集大小限制
+//分组聚合对操作的先后顺序有严格要求
 
 db.BaseRelation.aggregate([{$group:{_id:"$end",count:{$sum:1}}},{$match:{count:{$gte:2}}}],{allowDiskUse:true}) //allowDiskUse表示可以使用硬盘空间
 
+db.BaseRelation.aggregate([{$group:{_id:'$end',count:{$sum:1},ids:{$push:'$_id'}}},{$unwind:"$ids"},{$project:{_id:"$ids",count:"$count"}},{$sort:{_id:1}},{$out:"BaseRelation_group"}],{allowDiskUse:true})//{$project:{count:1,id:"$ids"}} {$unwind:"$ids"}, {$unwind:"$_ids"},db.BaseRelation.aggregate([{$group:{_id:'$end',count:{$sum:1},ids:{$push:'$_id'}}},{$group:{_id:'$count',ids:{$push:"$ids"}}},{$out:"BaseRelation_group"}],{allowDiskUse:true})
 
 
 }
@@ -8306,3 +8309,94 @@ RestTemplate req = new RestTemplate();
         return resp.getBody();
 		
 ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();//这个静态方法可以直接获取当前处理请求		
+
+
+db.getCollection('BaseRelation').find({}).size()
+var num=
+
+var obj=db.BaseRelation.aggregate([{$group:{_id:"$end",count:{$sum:1}}},{$match:{count:{$gte:2}}}],{allowDiskUse:true})
+obj.constructor
+obj.itcount()
+obj.toArray(
+
+
+db.eval('more2moreResult()');
+var dbQuery=db.BaseRelation.find({end:{$nin:excludeArr}}).sort({start:1}).skip(0).limit(100);
+
+
+db.system.js.insert({_id:'one2moreResult',value:function(from,to){
+    var excludeArr=db.eval('more2moreResult()');
+    var dbQuery=db.BaseRelation.find({end:{$nin:excludeArr}}).sort({start:1}).skip(from-1).limit(to-from+1);
+    return dbQuery.toArray();
+    }})
+    
+    
+    
+    
+    
+db.system.js.update({_id:'more2moreResult'},{_id:'more2moreResult',value:function(){
+    var aggregate=db.BaseRelation.aggregate([{$group:{_id:"$end",count:{$sum:1}}},{$match:{count:{$gte:2}}}],{allowDiskUse:true});
+    var excludes=aggregate.toArray();
+    var resultArr=[];
+    for(var i=0;i<excludes.length;i++){
+        resultArr.push(excludes[i]._id);
+        };
+        return resultArr;
+    
+    return aggregate;
+    }});
+    
+   var obj= db.eval('more2moreResult(1,100)')
+
+
+db.BaseRelation.aggregate([{$group:{_id:"$end",count:{$sum:1}}},{$match:{count:{$gte:2}}},{$out:'aggregate'}])//allowDiskUse:true,
+
+db.more2moreResult()
+    
+    db.system.js.insert()
+
+
+
+num
+
+.size()
+var obj=db.BaseRelation.mapReduce(function(){emit(this.end,1);},function(k,v){return Array.sum(v);})
+
+
+
+db.BaseRelation.mapReduce( 
+   function() { emit(this.end,1); }, 
+   function(key, values) {return Array.sum(values)}, 
+      {  
+//          // query :{value:{$gte:2}},
+         // finalize:function(key,result,arr){return {$match:{}}   },
+//           match:{value:{$gte:2}},
+          
+         out:"multiEnd" 
+      }
+)
+
+
+
+var val=function(){
+    var aggregate=db.BaseRelation.aggregate([{$group:{_id:"$end",count:{$sum:1}}},{$match:{count:{$gte:2}}}],{allowDiskUse:true});
+    var excludes=aggregate.toArray();
+    var resultArr=[];
+    for(var i=0;i<excludes.length;i++){
+        resultArr.push(excludes[i]._id);
+        }
+    }
+    val();
+    
+    
+    
+var arr=db.getCollection('multiEnd').find({value:{$gte:2}},{_id:1})
+// typeof arr
+arr.constructor
+
+var arr=db.BaseRelation.aggregate([{$group:{_id:"$end",count:{$sum:1}}},{$match:{count:{$gte:2}}}],{allowDiskUse:true}) //
+db.BaseRelation.find({end:{$nin:db.getCollection('multiEnd').find({value:{$gte:2}},{_id:1}).toArray()}}).size()
+    
+    
+    
+    
