@@ -71,6 +71,22 @@ db.BaseRelation.aggregate([{$group:{_id:"$end",count:{$sum:1}}},{$match:{count:{
 
 db.BaseRelation.aggregate([{$group:{_id:'$end',count:{$sum:1},ids:{$push:'$_id'}}},{$unwind:"$ids"},{$project:{_id:"$ids",count:"$count"}},{$sort:{_id:1}},{$out:"BaseRelation_group"}],{allowDiskUse:true})//{$project:{count:1,id:"$ids"}} {$unwind:"$ids"}, {$unwind:"$_ids"},db.BaseRelation.aggregate([{$group:{_id:'$end',count:{$sum:1},ids:{$push:'$_id'}}},{$group:{_id:'$count',ids:{$push:"$ids"}}},{$out:"BaseRelation_group"}],{allowDiskUse:true})
 
+//关联查询并且合并结果 1对一
+db.BaseRelation_start.aggregate([
+{$lookup:{from: "BaseRelation_end",
+         localField: "_id",
+           foreignField: "_id",
+          as: "inventory_docs"}},
+          
+          {
+      $replaceRoot: { newRoot: { $mergeObjects: [ { $arrayElemAt: [ "$inventory_docs", 0 ] }, "$$ROOT" ] } }
+   },
+   { $project: { inventory_docs: 0 } },
+         
+          {$out:"group_result"}
+],
+{allowDiskUse:true})
+
 
 }
 	
