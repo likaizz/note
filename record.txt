@@ -26,6 +26,13 @@ begin
  insert into person values(sys_guid(),'name'||i,i, dbms_random.value(0,150),sysdate);
  end loop;
  end;
+ 
+ 
+ select * from person where rownum<=1 FOR UPDATE nowait; --无等待,如遇锁直接异常
+ There was an unexpected error (type=Internal Server Error, status=500).
+java.lang.ClassNotFoundException org/springframework/core/JdkVersion  --spring遇上的死锁异常
+ 
+ 
 }
 
 
@@ -101,7 +108,43 @@ neo4j{
 	
 	
 	
+{String str=String.format("%06d",i);//6位数不足补0
+    @Test
+    public void createRela() {
+        List list = new ArrayList(100000);
+        for (int i = 1; i <= 400000; i++) {
+            int rnum = 8;
+            HashSet<Integer> set = new HashSet<Integer>(10);
+            for (int j = 0; j < rnum; j++) {
+                Relation r = new Relation();
+                r.setStart(String.format("%06d", i));
+                int from = 0, to = 0;
+                if (i % 2 == 1) {
+                    int n = (i + 1) / 2;
+                    to = n * 10 + 1;
+                } else {
+                    int n = (i / 2);
+                    to = n * 10 + 6;
+                }
+                from = to - 10;
+                int e = 0;
+                do {
+                    e = RandomUtils.nextInt(from, to);
+                } while (!set.add(e));
+                String end = String.format("%07d", e);
+                r.setEnd(end);
+                list.add(r);
+                if (list.size() == 100000) {
+//                        System.out.println(list);
+                    template.insert(list, "ralationx");
+                    list.clear();
+                }
+            }
+        }
+    }
 
+
+}
 	
 	
 	
